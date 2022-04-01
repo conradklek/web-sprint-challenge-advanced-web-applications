@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { NavLink, Routes, Route, useNavigate } from 'react-router-dom'
+import { NavLink, Routes, Route, useNavigate, Redirect } from 'react-router-dom'
 import Articles from './Articles'
 import LoginForm from './LoginForm'
 import Message from './Message'
@@ -83,6 +83,7 @@ export default function App() {
         setSpinnerOn(false)
       })
       .catch(err => {
+        console.log(err)
         redirectToLogin()
         setSpinnerOn(false)
       })
@@ -112,7 +113,6 @@ export default function App() {
   const updateArticle = ({ article_id, article }) => {
     // ✨ implement
     // You got this!
-
     setMessage('')
     setSpinnerOn(true)
     axiosWithAuth().put(`${articlesUrl}/${article_id}`, article)

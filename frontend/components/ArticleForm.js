@@ -52,7 +52,11 @@ export default function ArticleForm(props) {
       return false
     }
   }
-
+  if (!localStorage.getItem('token')) {
+    return (
+      <></>
+    )
+  }
   return (
     // ✨ fix the JSX: make the heading display either "Edit" or "Create"
     // and replace Function.prototype with the correct function
