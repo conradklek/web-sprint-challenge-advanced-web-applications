@@ -6,6 +6,7 @@ import Message from './Message'
 import ArticleForm from './ArticleForm'
 import Spinner from './Spinner'
 import axios from 'axios'
+import { axiosWithAuth } from './../axios'
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
 
@@ -74,11 +75,7 @@ export default function App() {
 
     setMessage('')
     setSpinnerOn(true)
-    axios.get(articlesUrl, {
-      headers: {
-        Authorization: localStorage.getItem('token')
-      }
-    })
+    axiosWithAuth().get(articlesUrl)
       .then(res => {
         console.log(res)
         setArticles(res.data.articles)
@@ -99,11 +96,7 @@ export default function App() {
 
     setMessage('')
     setSpinnerOn(true)
-    axios.post(articlesUrl, article, {
-      headers: {
-        Authorization: localStorage.getItem('token')
-      }
-    })
+    axiosWithAuth().post(articlesUrl, article)
       .then(res => {
         console.log(res)
         setArticles([...articles, res.data.article])
@@ -122,15 +115,10 @@ export default function App() {
 
     setMessage('')
     setSpinnerOn(true)
-    axios.put(`${articlesUrl}/${article_id}`, article, {
-      headers: {
-        Authorization: localStorage.getItem('token')
-      }
-    })
+    axiosWithAuth().put(`${articlesUrl}/${article_id}`, article)
       .then(res => {
         setMessage(res.data.message)
-        setArticles(articles.map(article => article.article_id === article_id ? res.data.article : article))
-        console.log(res)
+        setArticles([...articles.filter(article => article.article_id !== article_id), res.data.article])
         setSpinnerOn(false)
       })
       .catch(err => {
@@ -144,13 +132,9 @@ export default function App() {
 
     setMessage('')
     setSpinnerOn(true)
-    axios.delete(`${articlesUrl}/${article_id}`, {
-      headers: {
-        Authorization: localStorage.getItem('token')
-      }
-    })
+    axiosWithAuth().delete(`${articlesUrl}/${article_id}`)
       .then(res => {
-        console.log(res)
+        setMessage(res.data.message)
         setArticles(articles.filter(article => article.article_id !== article_id))
         setSpinnerOn(false)
       })
