@@ -105,7 +105,8 @@ export default function App() {
       }
     })
       .then(res => {
-        setArticles(res.data.articles)
+        console.log(res)
+        setArticles([...articles, res.data.article])
         setMessage(res.data.message)
         setSpinnerOn(false)
       })
@@ -127,8 +128,9 @@ export default function App() {
       }
     })
       .then(res => {
-        setArticles(res.data.articles)
         setMessage(res.data.message)
+        setArticles(articles.map(article => article.article_id === article_id ? res.data.article : article))
+        console.log(res)
         setSpinnerOn(false)
       })
       .catch(err => {
@@ -148,14 +150,13 @@ export default function App() {
       }
     })
       .then(res => {
-        setArticles(res.data.articles)
-        setMessage(res.data.message)
+        console.log(res)
+        setArticles(articles.filter(article => article.article_id !== article_id))
         setSpinnerOn(false)
       })
       .catch(err => {
-        redirectToLogin()
-        setMessage(err.response.data.message)
         setSpinnerOn(false)
+        console.log(err)
       })
   }
 
